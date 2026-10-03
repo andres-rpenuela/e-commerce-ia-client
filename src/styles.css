@@ -1,3 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import 'tailwindcss';
+@import "tailwindcss";
+
+/* 1. Incluye las clases y componentes de Flowbite */
+@plugin "flowbite/plugin";
+
+/* 2. Dile a Tailwind que escanee los archivos de Flowbite en node_modules */
+@source "../node_modules/flowbite";
