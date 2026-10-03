@@ -3,7 +3,8 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "types": []
+    /*  Para evitar que TypeScript se queje de que no reconoce import.meta.env en tus archivos environment.ts */
+     "types": ["vite/client"]
   },
   "include": ["src/**/*.ts"],
   "exclude": ["src/**/*.spec.ts"]

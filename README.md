@@ -57,3 +57,45 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+
+## 🌍 Gestión de Entornos con Archivos `.env`
+
+Originalmente, Angular (`@angular/build:application`) gestiona las variables de entorno mediante archivos TypeScript tradicionales (`environment.ts`). En este proyecto se ha migrado el compilador a **`@ngx-env/builder`** por las siguientes razones:
+
+### 🚀 ¿Por qué pasamos de Angular Nativo a `@ngx-env`?
+
+1. **Soporte Estándar para `.env`:** Angular corre en el navegador y no tiene acceso nativo a Node.js (`process.env` o `dotenv`). `@ngx-env` actúa como un intermediario en tiempo de compilación para leer archivos `.env` reales de forma segura.
+2. **Seguridad Avanzada (Git):** Evita subir credenciales o URLs críticas al repositorio. Ahora las configuraciones sensibles se guardan localmente en archivos `.env.development` o `.env.production` los cuales están protegidos en el `.gitignore`.
+3. **Cambio de Perfiles Dinámico:** Permite alternar entre entornos (Desarrollo, Staging, Producción) simplemente cambiando el archivo de variables, sin necesidad de modificar ni duplicar código fuente en TypeScript.
+4. **Prefijo Seguro (`NG_APP_`):** Por seguridad, el compilador solo inyecta en el cliente las variables que comiencen con `NG_APP_`, asegurando que no se filtren variables privadas del sistema operativo al navegador del usuario.
+
+Importante, isntalar: 
+
+```
+npm install @ngx-env/builder --save-dev
+```
+### 🛠️ Uso en el Código
+Para consumir una variable, se utiliza la sintaxis moderna de Vite/Esbuild inyectada por el builder:
+```typescript
+export const environment = {
+  apiUrl: import.meta.env['NG_APP_API_URL']
+};
+```
+
+En resumen:
+No, no te hace falta instalar dotenv para nada.
+
+De hecho, si lo instalas en tu proyecto de Angular, no va a funcionar. La librería dotenv clásica está programada exclusivamente para correr sobre Node.js (entorno de servidor). Si intentas importarla o ejecutarla en Angular, el navegador te arrojará un error en la consola diciendo que no reconoce módulos nativos del sistema como fs (file system) o path [🌐].
+
+¿Quién hace el trabajo de dotenv entonces?
+
+@ngx-env/builder hace exactamente el mismo trabajo que dotenv, pero adaptado para el mundo de Angular:
+
+1. Busca y lee tus archivos .env.development o .env.production en tu computadora (en tiempo de compilación).
+2. Extrae las variables que empiezan con NG_APP_.
+3. Las inyecta directamente en tu código de Angular justo antes de enviarlo al navegador.
+
+Así que puedes ahorrarte ese paquete. Con @ngx-env/builder configurado en tu angular.json ya tienes todo lo necesario para manejar tus perfiles de forma limpia y profesional.
+
+

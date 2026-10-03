@@ -1,0 +1,5 @@
+# Entornos locales (Contienen credenciales sensibles)
+.env.development
+.env.production
+.env.local
+.env

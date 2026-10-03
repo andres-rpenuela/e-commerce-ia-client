@@ -4,7 +4,12 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "dev": "ng serve --configuration development",
+    "pre": "ng serve --configuration preproduction",
+    "prod": "ng serve --configuration production",
     "build": "ng build",
+    "build:pre": "ng build --configuration preproduction",
+    "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
@@ -17,6 +22,7 @@
     "@angular/forms": "^22.2.0",
     "@angular/platform-browser": "^22.2.0",
     "@angular/router": "^22.2.0",
+    "@ngx-env/builder": "^22.0.0",
     "flowbite": "^4.0.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
