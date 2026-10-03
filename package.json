@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "dev": "ng serve --configuration development",
+    "dev": "ng serve --configuration development --host 0.0.0.0 --poll 1000",
     "pre": "ng serve --configuration preproduction",
     "prod": "ng serve --configuration production",
     "build": "ng build",

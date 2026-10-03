@@ -150,3 +150,42 @@ npm run test:ci
 **¿Por qué usar este comando?**
 * **Modo Non-Watch (`--no-watch`):** Obliga a Vitest a ejecutar las pruebas exactamente una vez y cerrar el proceso de Node inmediatamente al terminar (`exit 0` si pasan, `exit 1` si fallan), evitando que el contenedor Docker se quede colgado esperando cambios.
 * **Virtualización en Memoria:** Utiliza el entorno simulado de Vitest/JSDOM por consola, permitiendo testear la aplicación de forma rápida y ligera sin consumir recursos gráficos de pantalla.
+
+
+---
+
+## 🚀 Despliegue en Render (Pre-producción y Producción)
+
+El proyecto está preparado para desplegarse de forma independiente en **Render** como un **Web Service** basado en Docker. Gracias a la arquitectura del `Dockerfile`, utilizamos la misma receta de construcción para ambos servidores, controlando el comportamiento mediante variables en la nube.
+
+### 📋 Pasos para la Configuración en el Panel de Render
+
+Al crear o editar tus dos *Web Services* en el panel de **[Render Dashboard](https://render.com)**, asegúrate de aplicar la siguiente configuración en la pestaña **Environment**:
+
+#### 🧪 1. Servidor de Pre-producción (Staging)
+Ve a la pestaña **Environment** de tu servicio de pruebas y añade las siguientes variables:
+
+| Key (Clave) | Value (Valor) | Propósito |
+| :--- | :--- | :--- |
+| `ENV_CONFIG` | `preproduction` | Ordena al `Dockerfile` compilar usando `environment.preproduction.ts`. |
+| `NG_APP_API_URL` | `https://onrender.com` | URL del servidor de la API de pruebas en la nube. |
+
+#### 💻 2. Servidor de Producción (Live E-commerce)
+Ve a la pestaña **Environment** de tu servicio en vivo y añade las siguientes variables:
+
+| Key (Clave) | Value (Valor) | Propósito |
+| :--- | :--- | :--- |
+| `ENV_CONFIG` | `production` | Ordena al `Dockerfile` compilar la versión optimizada final (`environment.ts`). |
+| `NG_APP_API_URL` | `https://onrender.com` | URL del servidor de la API real con clientes en vivo. |
+
+---
+
+### ⚙️ Ajustes Obligatorios del Servicio (Settings)
+
+Para garantizar que el despliegue no falle, verifica que los parámetros generales del servicio web en Render coincidan con estos datos:
+
+* **Runtime:** `Docker`
+* **Dockerfile Path:** `Dockerfile` (debe apuntar a la raíz del proyecto).
+* **Auto-Deploy:** `Yes` (para que compile automáticamente cada vez que hagas un `git push`).
+
+> 💡 **Nota sobre Seguridad:** Como los archivos `.env.*` locales están protegidos en el `.gitignore`, Render utiliza de forma transparente las variables configuradas en su panel web para inyectarlas de forma segura en el empaquetado de Angular durante la fase de compilación.

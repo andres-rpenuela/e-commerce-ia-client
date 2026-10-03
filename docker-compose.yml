@@ -1,0 +1,67 @@
+# • Para programar en Local (con recarga automática):
+# docker compose up frontend-local
+# (Abrir en el navegador: http://localhost:4200)
+
+# • Para probar el build de Pre-producción (simulando servidor real):
+# docker compose up --build frontend-pre
+# (Abrir en el navegador: http://localhost:8081)
+
+# • Para probar el build definitivo de Producción:
+# docker compose up --build frontend-pro
+# (Abrir en el navegador: http://localhost:8080)
+
+# Comandos de depuración de imágenes/caché si es necesario:
+# docker compose build --no-cache
+# docker builder prune --force
+
+# Limpieza antes de reinciar
+# 1. Apaga los contenedores y limpia los volúmenes corruptos en memoria
+# docker compose down --volumes
+
+# 2. Vuelve a encender el entorno de desarrollo local
+# docker compose up frontend-local
+
+services:
+  # 💻 PERFIL 1: ENTORNO LOCAL (DEVELOPMENT)
+  # Levanta el servidor de desarrollo de Angular con recarga en vivo (Live Reload)
+    # 💻 PERFIL 1: ENTORNO LOCAL (DEVELOPMENT)
+  # Levanta el servidor de desarrollo de Angular con recarga en vivo (Live Reload)
+  frontend-local:
+    image: node:24.21.0-alpine
+    container_name: ecommerce_client_local
+    # 💡 Se ha eliminado 'user: "node"' para evitar conflictos de permisos con Windows
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules # 💡 Protege el node_modules interno del contenedor
+    ports:
+      - "4200:4200"
+    environment:
+      - NODE_ENV=development
+    # 💡 Instalamos dependencias primero y luego levantamos Angular
+    command: sh -c "npm install && npm run dev"
+
+
+  # 🧪 PERFIL 2: PRE-PRODUCCIÓN (STAGING)
+  # Compila usando .env.preproduction y sirve mediante Nginx
+  frontend-pre:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - ENV_CONFIG=preproduction
+    container_name: ecommerce_client_pre
+    ports:
+      - "8081:80"
+
+  # 🚀 PERFIL 3: PRODUCCIÓN (PRODUCTION)
+  # Compila optimizado usando .env.production y sirve mediante Nginx
+  frontend-pro:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - ENV_CONFIG=production
+    container_name: ecommerce_client_pro
+    ports:
+      - "8080:80"
