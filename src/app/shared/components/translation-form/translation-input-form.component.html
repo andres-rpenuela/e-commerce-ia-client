@@ -1,0 +1,473 @@
+<section class="space-y-5">
+
+  <!-- Component header -->
+  <header>
+    <h2 class="text-lg font-semibold">
+      {{ 'common.title.translations' | translate }}
+    </h2>
+  </header>
+
+  <!-- Add translation button -->
+  @if (
+    languageService.languagesLoaded() &&
+    languageService.languages().length > 0
+    ) {
+    <div class="flex items-center justify-between">
+
+      <shared-button
+        type="button"
+        label="btn.label.translation.add"
+        tooltip="btn.label.translation.add"
+        [svg]="icons.insertRowArrow"
+        icon="fa-solid fa-plus"
+        variant="ghost"
+        [disabled]="disabled()"
+        (clicked)="addTranslation()">
+      </shared-button>
+
+    </div>
+  }
+
+  <!-- Translations list -->
+  @defer (
+    when languageService.languagesLoaded() &&
+    languageService.languages().length > 0
+    ) {
+    @if (translations().length > 0) {
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left">
+
+          <thead>
+          <tr class="border-b border-default text-muted">
+            <th class="px-4 py-3">{{ 'common.title.language' | translate }}</th>
+            <th class="px-4 py-3">{{ 'common.title.translations' | translate }}</th>
+            <th class="px-4 py-3 text-right">{{ 'common.title.actions' | translate }}</th>
+          </tr>
+          </thead>
+
+          <tbody>
+            @for (
+                translation of translations();
+              track translation.localeId
+              ) {
+              <tr class="border-b border-default">
+
+                <td class="px-4 py-3 font-medium">
+                  {{ getLanguageName(translation.localeId) }}
+                </td>
+
+                <td class="px-4 py-3">
+                  <div class="space-y-2">
+                    @for (
+                        field of translation.fields;
+                      track field.field
+                      ) {
+                      <div>
+                        <span class="font-medium">
+                          {{ FIELDS[field.field] | translate }}:
+                        </span>
+                        {{ field.value }}
+                      </div>
+                    }
+                  </div>
+                </td>
+
+                <td class="px-4 py-3 text-right">
+
+                  <shared-button
+                    type="button"
+                    tooltip="btn.label.translation.remove"
+                    variant="ghost"
+                    icon="fa-solid fa-trash"
+                    [disabled]="disabled()"
+                    (clicked)="removeTranslation(translation.localeId)">
+                  </shared-button>
+
+                  <shared-button
+                    type="button"
+                    tooltip="btn.label.translation.edit"
+                    tooltipPlacement="top"
+                    variant="ghost"
+                    icon="fa-solid fa-pen"
+                    [disabled]="disabled()"
+                    (clicked)="editTranslation(translation)">
+                  </shared-button>
+
+                </td>
+
+              </tr>
+            }
+          </tbody>
+
+        </table>
+      </div>
+    } @else {
+      <p class="py-6 text-center text-muted">
+        {{ 'label.translation.empty' | translate }}
+      </p>
+    }
+  } @placeholder {
+    <div class="flex items-center justify-center">
+      <shared-spinner label="spinner.label.loading.language" />
+    </div>
+  }
+
+</section>
+
+<!-- Shared icons -->
+<shared-icons #icons />
+
+
+<!-- ################################################## -->
+<!-- Translation modal -->
+<!-- ################################################## -->
+
+<shared-modal
+  #translationModal
+  id="translation-modal"
+  [title]="modalTitle()">
+
+  <ng-container
+    *ngTemplateOutlet="fieldTranslationForm">
+  </ng-container>
+
+</shared-modal>
+
+
+<ng-template #fieldTranslationForm>
+
+  <form
+    class="translation-modal-form"
+    [formGroup]="translationForm"
+    (ngSubmit)="saveTranslation()">
+
+    <!-- Language selection -->
+    <div class="translation-language-section">
+      <shared-label-form
+        title="common.title.language"
+        [labelClass]="'modal-label'"
+        [required]="translationForm.controls.localeId.hasValidator(Validators.required)">
+      </shared-label-form>
+
+      <select
+        id="language"
+        formControlName="localeId"
+        class="modal-select">
+
+        <option [ngValue]="null" disabled>
+          {{  'select.option.label.language' | translate }}
+        </option>
+
+        @for (
+            language of languageService.languages();
+          track language.id
+          ) {
+          <option [ngValue]="language.id">
+            {{ 'common.title.'+language.code | translate }}
+          </option>
+        }
+
+      </select>
+
+      @if (localeIdControl.touched && localeIdControl.invalid) {
+        @if (localeIdControl.hasError('duplicate')) {
+          <p class="form-error ">
+            {{ 'error.label.translation.duplicate' | translate }} <!--Ya hay una traducción para ese idioma.-->
+          </p>
+        } @else {
+          <p class="form-error ">
+            {{ 'error.label.translation.required' | translate }} <!--Selecciona un idioma.-->
+          </p>
+        }
+      }
+
+    </div>
+
+
+    <!-- Fields section header -->
+    <div class="translation-fields-header">
+
+      <div>
+        <h4 class="text-sm font-semibold text-heading">
+          {{ 'common.title.translation.fields' | translate }} <!-- Campos de traducción -->
+        </h4>
+
+        <p class="text-xs text-muted">
+          {{ 'common.title.translation.management-fields' | translate  }}<!-- Gestiona los campos de esta traducción.-->
+        </p>
+      </div>
+
+      <shared-button
+        type="button"
+        label="btn.translation.add-field"
+        tooltip="btn.translation.add-field"
+        icon="fa-solid fa-plus"
+        variant="ghost"
+        size="sm"
+        [disabled]="disabled() || fields.length >= fieldOptions.length"
+        (clicked)="addField()">
+      </shared-button>
+
+    </div>
+
+
+    <!-- Scrollable fields area -->
+    <div class="translation-fields-scroll">
+
+      <div
+        formArrayName="fields"
+        class="translation-fields-grid">
+
+        @for (
+            fieldGroup of fields.controls;
+          track $index
+          ) {
+          <div
+            [formGroupName]="$index"
+            class="translation-field-card">
+
+            <!-- Field card header -->
+            <!--            <div class="translation-field-header">-->
+
+            <!--              <div class="flex min-w-0 items-center gap-2">-->
+
+            <!--                <span class="translation-field-index">-->
+            <!--                  {{ $index + 1 }}-->
+            <!--                </span>-->
+
+            <!--                <span class="truncate text-sm font-semibold text-heading">-->
+            <!--                  {{ FIELDS[fieldGroup.controls.field.value!] | translate }}-->
+            <!--                </span>-->
+
+            <!--                @if (fieldGroup.controls.field.value === 'NAME') {-->
+            <!--                  <span class="translation-required-badge">-->
+            <!--                    &lt;!&ndash; Obligatorio &ndash;&gt;-->
+            <!--                    {{ 'common.title.required' | translate }}-->
+            <!--                  </span>-->
+            <!--                }-->
+
+            <!--              </div>-->
+
+            <!--              @if (fieldGroup.controls.field.value !== 'NAME') {-->
+            <!--                <shared-button-->
+            <!--                  type="button"-->
+            <!--                  tooltip="btn.label.translation.removed"-->
+            <!--                  icon="fa-solid fa-trash"-->
+            <!--                  variant="ghost"-->
+            <!--                  size="sm"-->
+            <!--                  [disabled]="disabled()"-->
+            <!--                  (clicked)="removeField($index)">-->
+            <!--                </shared-button>-->
+            <!--              }-->
+
+            <!--            </div>-->
+            <!-- Field card header -->
+            <div class="translation-field-header">
+
+              <div class="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+
+                <span class="translation-field-index">
+                  {{ $index + 1 }}
+                </span>
+
+                            <span class="text-sm font-semibold text-heading">
+                  {{ FIELDS[fieldGroup.controls.field.value!] | translate }}
+                </span>
+
+                @if (fieldGroup.controls.field.value === 'NAME') {
+                  <span class="translation-required-badge">
+                      {{ 'common.title.required' | translate }}
+                    </span>
+                }
+
+              </div>
+
+              @if (fieldGroup.controls.field.value !== 'NAME') {
+                <shared-button
+                  type="button"
+                  tooltip="btn.label.translation.removed"
+                  icon="fa-solid fa-trash"
+                  variant="ghost"
+                  size="sm"
+                  [disabled]="disabled()"
+                  (clicked)="removeField($index)">
+                </shared-button>
+              }
+
+            </div>
+
+            <!-- Field selection -->
+            <div>
+
+              <label class="modal-label">
+                <!-- Campo de traducción-->
+                {{ 'common.title.translation.field' | translate }}
+              </label>
+
+              <select
+                formControlName="field"
+                class="modal-select">
+
+                @for (
+                    field of fieldOptions;
+                  track field[0]
+                  ) {
+                  <option [ngValue]="field[0]">
+                    {{ field[1] | translate }}
+                  </option>
+                }
+
+              </select>
+
+            </div>
+
+
+            <!-- Translation value -->
+            <div>
+
+              <shared-label-form
+                [labelFor]="'translation-' + $index"
+                labelClass="modal-label"
+                title="common.title.translation"
+                [required]="true">
+              </shared-label-form>
+
+              <textarea
+                [id]="'translation-' + $index"
+                formControlName="value"
+                class="modal-select translation-field-textarea"
+                rows="3"
+                placeholder="Introduce la traducción">
+              </textarea>
+              <!-- arg de textarea, debug::       (input)="debugTextarea($event, $index)"> -->
+
+
+              @if (
+                getFieldValueControl($index).touched &&
+                getFieldValueControl($index).invalid
+                ) {
+                <p class="form-error ">
+                  Este campo es obligatorio.
+                </p>
+              }
+
+            </div>
+            <!-- debug -->
+            <!--            <p class="text-xs text-muted">-->
+            <!--              Valor del control: {{ getFieldValueControl($index).value | json }}-->
+            <!--            </p>-->
+
+          </div>
+        }
+
+      </div>
+
+    </div>
+
+
+    <!-- Form validation -->
+    @if (
+      translationForm.hasError('requiredNameField') &&
+      translationForm.touched
+      ) {
+      <p class="text-sm text-danger">
+        El campo NAME es obligatorio.
+      </p>
+    }
+
+    @if (
+      translationForm.hasError('duplicateTranslationFields') &&
+      translationForm.touched
+      ) {
+      <p class="text-sm text-danger">
+        No puedes añadir campos de traducción duplicados.
+      </p>
+    }
+
+
+    <!-- Modal actions -->
+    <div class="modal-footer translation-modal-footer">
+
+      <shared-button
+        type="button"
+        label="btn.label.cancel"
+        tooltip="btn.label.cancel"
+        variant="secondary"
+        [disabled]="disabled()"
+        (clicked)="translationModal.close()">
+      </shared-button>
+
+      <shared-button
+        type="submit"
+        label="btn.label.translation.save"
+        tooltip="btn.label.translation.save"
+        variant="primary"
+        [disabled]="translationForm.invalid || disabled()">
+      </shared-button>
+
+    </div>
+
+  </form>
+
+  <!-- debug -->
+  <!-- Form debug -->
+  <!--  <pre class="overflow-x-auto whitespace-pre-wrap text-xs">{{ getFormDebug() | json }}</pre>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</ng-template>

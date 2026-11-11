@@ -1,0 +1,34 @@
+<div class="acl-panel">
+  <!-- Nota:
+  El contenido que quieras proyectar debe llevar
+  los atributos acl-tree o acl-detail
+  Ejemplo:
+  ```
+  <shared-acl-panel>
+
+    <div acl-tree>
+      prueba
+    </div>
+
+    <div acl-detail>
+      Detalles
+    </div>
+
+  </shared-acl-panel>
+  ```
+
+  Con `<ng-content select="[acl-tree]" />`
+
+
+  -->
+  <!-- Panel izquierdo: árbol -->
+  <aside class="acl-panel__tree">
+    <ng-content select="[acl-tree]" />
+  </aside>
+
+  <!-- Panel derecho: detalles -->
+  <section class="acl-panel__detail">
+    <ng-content select="[acl-detail]" />
+  </section>
+
+</div>

@@ -1,0 +1,23 @@
+<ul class="acl-tree">
+  @for (node of nodes(); track node.id) {
+    <shared-acl-tree-node
+      [node]="node"
+      [selectedNodeId]="selectedNodeId()"
+      (selectionChange)="selectionChange.emit($event)"
+      (nodeSelected)="nodeSelected.emit($event)"
+    />
+  }
+</ul>
+
+<!--<ul class="acl-tree">-->
+<!--  @for (node of nodes(); track node.id) {-->
+<!--    <shared-acl-tree-node-->
+<!--      [node]="node"-->
+<!--      [selectable]="selectable()"-->
+<!--      [selectedIds]="selectedIds()"-->
+<!--      [selectedNodeId]="selectedNodeId()"-->
+<!--      (selectionChange)="selectionChange.emit($event)"-->
+<!--      (nodeSelected)="nodeSelected.emit($event)"-->
+<!--    />-->
+<!--  }-->
+<!--</ul>-->

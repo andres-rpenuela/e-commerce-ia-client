@@ -1,0 +1,17 @@
+{
+  "common": {
+    "title": {
+      "translation": "Traduccione",
+      "translations": "Traducciones",
+      "languages": "Idiomas",
+      "language": "Idioma",
+      "action": "Acción",
+      "actions": "Acciones",
+      "add": "Agregar",
+      "edit": "Editar",
+      "remove": "Eliminar",
+      "en": "Inglés",
+      "es": "Español"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+<button
+  [type]="type()"
+  class="button"
+  [class.button-primary]="variant() === 'primary'"
+  [class.button-secondary]="variant() === 'secondary'"
+  [class.button-success]="variant() === 'success'"
+  [class.button-danger]="variant() === 'danger'"
+  [class.button-ghost]="variant() === 'ghost'"
+  [class.button-sm]="size() === 'sm'"
+  [class.button-md]="size() === 'md'"
+  [class.button-lg]="size() === 'lg'"
+  [class.button-icon-only]="!label()"
+  [disabled]="disabled()"
+  [attr.aria-label]="!label() ? (tooltip() | translate) : null"
+  (click)="onClick()"
+  [sharedTooltip]="tooltip()"
+  [tooltipPlacement]="tooltipPlacement()">
+
+  @if (svg(); as svgTemplate) {
+    <ng-container [ngTemplateOutlet]="svgTemplate" />
+  } @else if (icon()) {
+    <i
+      [class]="icon() + ' button-icon-element'"
+      aria-hidden="true">
+    </i>
+  }
+
+  @if (label()) {
+    <span>{{ label() | translate }}</span>
+  }
+
+  <!-- use as alternative, shared-tooltip directive instead of the following code -->
+<!--  @if (tooltip()) {-->
+<!--    <span class="button-tooltip"  role="tooltip">-->
+<!--      {{ tooltip() | translate }}-->
+<!--    </span>-->
+<!--  }-->
+
+</button>

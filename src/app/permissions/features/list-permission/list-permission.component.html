@@ -1,0 +1,28 @@
+@if (loading()) {
+  <shared-spinner />
+} @else if (aclNodes().length === 0) {
+  <p>No hay permisos disponibles.</p>
+} @else {
+  <shared-acl-panel>
+
+    <!-- Árbol de permisos -->
+    <div acl-tree>
+      <shared-acl-tree
+        [nodes]="aclNodes()"
+        [selectable]="true"
+        [selectedIds]="selectedIds()"
+        [selectedNodeId]="selectedNode()?.id ?? null"
+        (selectionChange)="onSelectionChange($event)"
+        (nodeSelected)="onNodeSelected($event)"
+      />
+    </div>
+
+    <!-- Detalle del nodo seleccionado -->
+    <div acl-detail>
+      <shared-acl-detail
+        [node]="selectedNode()"
+      />
+    </div>
+
+  </shared-acl-panel>
+}

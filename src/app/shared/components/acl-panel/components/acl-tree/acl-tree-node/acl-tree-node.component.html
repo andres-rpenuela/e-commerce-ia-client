@@ -1,0 +1,47 @@
+<ng-template #renderNode let-node>
+  <li class="acl-tree-node">
+
+    <div class="acl-tree-node__content">
+
+      @if (selectable()) {
+        <input
+          type="checkbox"
+          class="checkbox checkbox-primary checkbox-sm"
+          [checked]="selectedIds().includes(node.id)"
+          (change)="onSelectionChange()"
+          [attr.aria-label]="'Seleccionar ' + node.name"
+        />
+      }
+
+      <button
+        type="button"
+        class="acl-tree-node__name"
+        [class.bg-primary]="selectedNodeId() === node.id"
+        [class.text-primary-content]="selectedNodeId() === node.id"
+        [class.font-semibold]="selectedNodeId() === node.id"
+        [class.underline]="selectedNodeId() === node.id"
+        (click)="nodeSelected.emit( node )"
+      >
+        {{ node.name }}
+      </button>
+
+    </div>
+
+    @if (node.children?.length > 0) {
+      <ul class="acl-tree-node__children">
+        @for (child of node.children; track child.id) {
+          <ng-container
+            [ngTemplateOutlet]="renderNode"
+            [ngTemplateOutletContext]="{ $implicit: child }"
+          />
+        }
+      </ul>
+    }
+
+  </li>
+</ng-template>
+
+<ng-container
+  [ngTemplateOutlet]="renderNode"
+  [ngTemplateOutletContext]="{ $implicit: node() }"
+/>

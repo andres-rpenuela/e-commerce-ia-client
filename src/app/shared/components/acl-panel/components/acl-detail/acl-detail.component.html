@@ -1,0 +1,123 @@
+
+@if (node(); as selectedNode) {
+  <div class="h-full space-y-6 p-5">
+
+    <!-- Cabecera -->
+    <div class="flex items-center gap-3">
+      <div class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <i class="fa-solid fa-shield-halved text-lg"></i>
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <p class="text-xs font-semibold uppercase tracking-wider text-base-content/45">
+          Detalle del elemento
+        </p>
+        <h2 class="truncate text-lg font-bold text-base-content">
+          {{ selectedNode.name }}
+        </h2>
+      </div>
+    </div>
+
+    <!-- Clasificación -->
+    <div class="flex flex-wrap items-center gap-2">
+      @switch (selectedNode.nodeType) {
+        @case ('CONTEXT') {
+          <span class="badge badge-info badge-outline gap-1.5">
+            <i class="fa-solid fa-building"></i>
+            Contexto
+          </span>
+        }
+        @case ('FUNCTIONAL_ROLE') {
+          <span class="badge badge-secondary badge-outline gap-1.5">
+            <i class="fa-solid fa-users"></i>
+            Rol funcional
+          </span>
+        }
+        @case ('TECHNICAL_ROLE') {
+          <span class="badge badge-warning badge-outline gap-1.5">
+            <i class="fa-solid fa-user-gear"></i>
+            Rol técnico
+          </span>
+        }
+        @case ('PERMISSION') {
+          <span class="badge badge-primary badge-outline gap-1.5">
+            <i class="fa-solid fa-key"></i>
+            Permiso
+          </span>
+        }
+      }
+
+      @if (selectedNode.children.length > 0) {
+        <span class="badge badge-ghost gap-1.5">
+          <i class="fa-solid fa-sitemap"></i>
+          {{ selectedNode.children.length }} hijos
+        </span>
+      }
+    </div>
+
+    <!-- Código -->
+    <section class="space-y-2">
+      <h3 class="text-xs font-bold uppercase tracking-wider text-base-content/45">
+        <i class="fa-solid fa-code mr-1"></i>
+        Código identificador
+      </h3>
+
+      <div class="rounded-lg bg-base-200/70 px-3 py-3">
+        <code class="break-all text-sm font-semibold text-primary">
+          {{ selectedNode.code }}
+        </code>
+      </div>
+    </section>
+
+    <!-- Descripción -->
+    <section class="space-y-2">
+      <h3 class="text-xs font-bold uppercase tracking-wider text-base-content/45">
+        <i class="fa-solid fa-align-left mr-1"></i>
+        Descripción
+      </h3>
+
+      <p class="text-sm leading-6 text-base-content/70">
+        {{ selectedNode.description || 'Sin descripción disponible.' }}
+      </p>
+    </section>
+
+    <!-- Elementos hijos -->
+    @if (selectedNode.children.length > 0) {
+      <section class="space-y-3">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-base-content/45">
+          <i class="fa-solid fa-diagram-project mr-1"></i>
+          Elementos dependientes
+        </h3>
+
+        <div class="space-y-2">
+          @for (child of selectedNode.children; track child.id) {
+            <div class="flex items-center gap-2 text-sm">
+              <i class="fa-solid fa-circle-dot text-xs text-primary/60"></i>
+              <span class="min-w-0 flex-1 truncate text-base-content/80">
+                {{ child.name }}
+              </span>
+              <span class="badge badge-ghost badge-sm">
+                {{ child.nodeType }}
+              </span>
+            </div>
+          }
+        </div>
+      </section>
+    }
+
+  </div>
+} @else {
+  <div class="flex min-h-72 flex-col items-center justify-center px-6 text-center">
+    <div class="mb-4 flex size-16 items-center justify-center rounded-2xl bg-primary/10 text-primary/40">
+      <i class="fa-solid fa-shield-halved text-3xl"></i>
+    </div>
+
+    <h3 class="font-bold text-base-content">
+      Ningún elemento seleccionado
+    </h3>
+
+    <p class="mt-2 max-w-xs text-sm leading-6 text-base-content/50">
+      Selecciona un elemento del árbol ACL para consultar su información.
+    </p>
+  </div>
+}

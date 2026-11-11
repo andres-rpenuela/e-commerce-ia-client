@@ -1,0 +1,38 @@
+<div
+  #modalElement
+  [id]="id()"
+  tabindex="-1"
+  aria-hidden="true"
+  class="fixed inset-0 z-50 hidden h-full w-full
+         items-center justify-center
+         overflow-y-auto overflow-x-hidden
+         bg-black/50 p-4 backdrop-blur-sm">
+
+  <div class="relative w-full max-w-lg">
+
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div class="modal-header">
+        <h3 class="modal-title">
+          {{ title() }}
+        </h3>
+
+        <button
+          type="button"
+          class="modal-close"
+          aria-label="Cerrar"
+          (click)="close()">
+
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <!-- Dynamic content -->
+      <div class="modal-body">
+        <ng-content />
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,143 @@
+/*
+ * ============================================================
+ * BUTTON SYSTEM
+ * Tailwind CSS 4
+ * ============================================================
+ *
+ * Clases globales para los botones de la aplicación.
+ *
+ * Importar desde src/styles.css:
+ *
+ * @import "./styles/buttons.css";
+ *
+ * ============================================================
+ */
+
+@layer components {
+
+  /* ==========================================================
+     BUTTON BASE
+     ========================================================== */
+
+  .button {
+    @apply relative inline-flex items-center justify-center gap-2
+    rounded-lg border border-transparent
+    font-medium whitespace-nowrap
+    transition-all duration-200 ease-in-out
+    focus-visible:outline-none
+    focus-visible:ring-2 focus-visible:ring-offset-2
+    focus-visible:ring-offset-neutral-primary
+    disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  /* ==========================================================
+     BUTTON VARIANTS
+     ========================================================== */
+
+  .button-primary {
+    @apply bg-brand text-white
+    hover:bg-brand-hover
+    active:bg-brand-active
+    focus-visible:ring-brand;
+  }
+
+  .button-secondary {
+    @apply border border-default
+    bg-neutral-primary text-body
+    hover:bg-neutral-tertiary
+    active:bg-neutral-secondary
+    focus-visible:ring-brand;
+  }
+
+  .button-success {
+    @apply bg-success text-white
+    hover:brightness-95
+    active:brightness-90
+    focus-visible:ring-success;
+  }
+
+  .button-danger {
+    @apply bg-danger text-white
+    hover:brightness-95
+    active:brightness-90
+    focus-visible:ring-danger;
+  }
+
+  .button-ghost {
+    @apply bg-transparent text-body
+    hover:bg-neutral-tertiary
+    active:bg-neutral-secondary
+    focus-visible:ring-brand;
+  }
+
+  /* ==========================================================
+     BUTTON SIZES
+     ========================================================== */
+
+  .button-sm {
+    @apply gap-1.5 rounded-md px-3 py-1.5 text-xs;
+  }
+
+  .button-md {
+    @apply gap-2 px-4 py-2.5 text-sm;
+  }
+
+  .button-lg {
+    @apply gap-2.5 px-6 py-3 text-base;
+  }
+
+  /* ==========================================================
+     ICONS
+     ========================================================== */
+
+  .button-icon-element {
+    @apply inline-flex shrink-0 items-center justify-center text-current;
+  }
+
+  .button .icon-svg {
+    @apply size-4 shrink-0;
+  }
+
+  .button .button-svg svg {
+    @apply size-5 shrink-0;
+    display: block;
+    width: 29px;
+    height: 29px;
+  }
+
+  /* ==========================================================
+     ICON ONLY
+     ========================================================== */
+
+  .button-icon-only {
+    @apply size-9 shrink-0 p-0;
+  }
+
+  .button-icon-only.button-sm {
+    @apply size-8;
+  }
+
+  .button-icon-only.button-lg {
+    @apply size-11;
+  }
+
+  /* ==========================================================
+     TOOLTIP
+     ========================================================== */
+
+  .button-tooltip {
+    @apply pointer-events-none absolute
+    left-1/2 top-full z-50 mt-2
+    -translate-x-1/2 translate-y-1
+    whitespace-nowrap rounded-md
+    bg-slate-900 px-2.5 py-1.5
+    text-xs font-medium text-white
+    opacity-0 shadow-lg
+    transition-all duration-200;
+  }
+
+  .button-icon-only:hover .button-tooltip,
+  .button-icon-only:focus-visible .button-tooltip {
+    @apply translate-y-0 opacity-100;
+  }
+}

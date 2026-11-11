@@ -1,0 +1,12 @@
+{
+  "btn": {
+    "label": {
+      "translation":
+      {
+        "add": "Add translation",
+        "remove": "Remove translation"
+      },
+      "saved": "Saved"
+    }
+  }
+}

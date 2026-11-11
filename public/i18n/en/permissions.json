@@ -1,0 +1,8 @@
+{
+  "permission": {
+    "code": {
+      "label": "Code",
+      "description": "Unique permission identifier"
+    }
+  }
+}

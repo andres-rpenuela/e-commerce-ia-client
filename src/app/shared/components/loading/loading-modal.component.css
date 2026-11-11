@@ -1,0 +1,23 @@
+
+.loading-progress {
+  width: 40%;
+  height: 100%;
+  background-color: #2563eb;
+  border-radius: 9999px;
+  animation: loading-progress 2s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes loading-progress {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  50% {
+    transform: translateX(150%);
+  }
+
+  100% {
+    transform: translateX(250%);
+  }
+}

@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+.acl-tree-node {
+  list-style: none;
+}
+
+.acl-tree-node__content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0;
+}
+
+.acl-tree-node__name {
+  cursor: pointer;
+  text-align: left;
+}
+
+.acl-tree-node__name:hover {
+  text-decoration: underline;
+}
+
+.acl-tree-node__children {
+  list-style: none;
+  margin-left: 1.25rem;
+  padding-left: 0.75rem;
+  border-left: 1px solid #d1d5db;
+}

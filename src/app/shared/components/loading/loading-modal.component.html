@@ -1,0 +1,55 @@
+
+@if (loadingService.loading()) {
+  <div class="fixed inset-0 z-[100] flex items-center justify-center
+              bg-black/40 backdrop-blur-sm">
+
+    <div class="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl">
+
+      <div class="mb-5 flex flex-col items-center gap-3">
+
+        <div class="flex h-14 w-14 items-center justify-center
+                    rounded-full bg-blue-100">
+          <svg
+            class="h-7 w-7 animate-spin text-blue-600"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            />
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            />
+          </svg>
+        </div>
+
+        <h2 class="text-lg font-bold text-gray-800">
+          Procesando solicitud
+        </h2>
+
+        <p class="text-center text-sm text-gray-500">
+          {{ loadingService.message() }}
+        </p>
+
+      </div>
+
+      <!-- Progress bar -->
+      <div class="h-2 w-full overflow-hidden rounded-full bg-gray-200">
+        <div class="loading-progress"></div>
+      </div>
+
+      <p class="mt-3 text-center text-xs text-gray-400">
+        Por favor, espera...
+      </p>
+
+    </div>
+  </div>
+}

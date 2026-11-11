@@ -1,0 +1,96 @@
+/*
+ * ============================================================
+ * THEME SYSTEM
+ * Tailwind CSS 4
+ * ============================================================
+ */
+
+@theme inline {
+  /* Backgrounds */
+  --color-neutral-primary: var(--theme-neutral-primary);
+  --color-neutral-secondary: var(--theme-neutral-secondary);
+  --color-neutral-tertiary: var(--theme-neutral-tertiary);
+
+  /* Text */
+  --color-heading: var(--theme-heading);
+  --color-body: var(--theme-body);
+  --color-muted: var(--theme-muted);
+
+  /* Borders */
+  --color-default: var(--theme-border);
+
+  /* Brand */
+  --color-brand: var(--theme-brand);
+  --color-brand-hover: var(--theme-brand-hover);
+  --color-brand-active: var(--theme-brand-active);
+  --color-brand-medium: var(--theme-brand-medium);
+
+  /* Semantic */
+  --color-success: var(--theme-success);
+  --color-danger: var(--theme-danger);
+  --color-warning: var(--theme-warning);
+}
+
+/* ============================================================
+   LIGHT THEME
+   ============================================================ */
+
+:root {
+  color-scheme: light;
+
+  /* Backgrounds */
+  --theme-neutral-primary: #ffffff;
+  --theme-neutral-secondary: #f8fafc;
+  --theme-neutral-tertiary: #f1f5f9;
+
+  /* Text */
+  --theme-heading: #0f172a;
+  --theme-body: #475569;
+  --theme-muted: #94a3b8;
+
+  /* Borders */
+  --theme-border: #e2e8f0;
+
+  /* Brand */
+  --theme-brand: #4f46e5;
+  --theme-brand-hover: #4338ca;
+  --theme-brand-active: #3730a3;
+  --theme-brand-medium: #c7d2fe;
+
+  /* Semantic */
+  --theme-success: #059669;
+  --theme-danger: #dc2626;
+  --theme-warning: #d97706;
+}
+
+/* ============================================================
+   DARK THEME
+   ============================================================ */
+
+html.dark {
+  color-scheme: dark;
+
+  /* Backgrounds */
+  --theme-neutral-primary: #0f172a;
+  --theme-neutral-secondary: #1e293b;
+  --theme-neutral-tertiary: #334155;
+
+  /* Text */
+  --theme-heading: #f1f5f9;
+  --theme-body: #cbd5e1;
+  --theme-muted: #94a3b8;
+
+  /* Borders */
+  --theme-border: #334155;
+
+  /* Brand */
+  --theme-brand: #818cf8;
+  --theme-brand-hover: #6366f1;
+  --theme-brand-active: #4f46e5;
+  --theme-brand-medium: #3730a3;
+
+  /* Semantic */
+  --theme-success: #34d399;
+  --theme-danger: #f87171;
+  --theme-warning: #fbbf24;
+}

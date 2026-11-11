@@ -1,0 +1,23 @@
+{
+  "permission": {
+    "management.page.title": "Gestión de Permisos",
+    "btn": {
+      "label": {
+        "list": "Lista de Permisos",
+        "create": "Crear Permiso"
+      }
+    },
+    "form":{
+      "create": {
+        "title": "Crear Permiso",
+        "description": "Descripcion Permiso"
+      },
+      "input": {
+        "code": {
+          "label": "Código",
+          "description": "Identificador único del permiso"
+        }
+      }
+    }
+  }
+}

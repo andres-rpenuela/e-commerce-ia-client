@@ -1,0 +1,11 @@
+{
+  "spinner":
+  {
+    "label": {
+      "loading": {
+        "common": "Loading ...",
+        "language": "Loading Languages..."
+      }
+    }
+  }
+}

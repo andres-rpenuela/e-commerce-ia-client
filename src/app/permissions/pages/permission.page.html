@@ -1,0 +1,28 @@
+
+<div class="mx-auto w-full max-w-7xl space-y-6 px-4 py-6 sm:px-6 lg:px-8">
+  <header class="space-y-4">
+    <h1 class="text-2xl font-bold tracking-tight">
+      {{ 'permission.management.page.title' | translate }}
+    </h1>
+
+    <nav class="flex flex-wrap gap-2 border-b border-base-300 pb-3">
+      <a
+        routerLink="list"
+        routerLinkActive="tab-active"
+        class="tab tab-bordered">
+        {{ 'permission.btn.label.list' | translate }}
+      </a>
+
+      <a
+        routerLink="create"
+        routerLinkActive="tab-active"
+        class="tab tab-bordered">
+        {{ 'permission.btn.label.create' | translate }}
+      </a>
+    </nav>
+  </header>
+
+  <main class="min-w-0">
+    <router-outlet />
+  </main>
+</div>

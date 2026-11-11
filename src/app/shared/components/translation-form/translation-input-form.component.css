@@ -1,0 +1,107 @@
+@reference "../../../../styles.css";
+
+@layer components {
+
+  /* ==================================================
+     TRANSLATION MODAL
+     ================================================== */
+
+  .translation-modal-form {
+    @apply flex min-h-0 flex-col gap-4;
+    max-height: 70vh;
+  }
+
+  /* ==================================================
+     LANGUAGE
+     ================================================== */
+
+  .translation-language-section {
+    @apply shrink-0;
+  }
+
+  /* ==================================================
+     FIELDS HEADER
+     ================================================== */
+
+  .translation-fields-header {
+    @apply flex shrink-0 items-center justify-between gap-3;
+  }
+
+  /* ==================================================
+     SCROLLABLE FIELDS
+     ================================================== */
+
+  .translation-fields-scroll {
+    @apply min-h-0 flex-1 overflow-y-auto overscroll-contain pr-2;
+    max-height: 40vh;
+  }
+
+  /* ==================================================
+     FIELDS GRID
+     ================================================== */
+
+  .translation-fields-grid {
+    @apply grid grid-cols-1 gap-4;
+  }
+
+  @media (min-width: 640px) {
+    .translation-fields-grid {
+      @apply grid-cols-2;
+    }
+  }
+
+  /* ==================================================
+     FIELD CARD
+     ================================================== */
+
+  .translation-field-card {
+    @apply flex min-w-0 flex-col gap-3
+    rounded-xl border border-default
+    bg-neutral-primary p-4
+    transition-colors;
+  }
+
+  .translation-field-card:focus-within {
+    @apply border-brand;
+  }
+
+  /* ==================================================
+     FIELD HEADER
+     ================================================== */
+
+  /*.translation-field-header {*/
+  /*  @apply flex items-center justify-between gap-2*/
+  /*  border-b border-default pb-3;*/
+  /*}*/
+  .translation-field-header {
+    @apply flex flex-wrap items-center justify-between gap-2
+    border-b border-default pb-3;
+  }
+
+  .translation-field-index {
+    @apply flex size-7 shrink-0 items-center justify-center
+    rounded-lg bg-neutral-tertiary
+    text-xs font-semibold text-heading;
+  }
+
+  .translation-required-badge {
+    @apply shrink-0 rounded-full bg-brand/10
+    px-2 py-1 text-xs font-medium text-brand;
+  }
+
+  /* ==================================================
+     TEXTAREA
+     ================================================== */
+
+  .translation-field-textarea {
+    @apply min-h-24 resize-y;
+  }
+
+  /* ==================================================
+     MODAL FOOTER
+     ================================================== */
+
+  .translation-modal-footer {
+    @apply flex shrink-0 justify-end gap-3;
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "btn": {
+    "label": {
+      "translation":
+      {
+        "add": "Agregar traducciones",
+        "edit": "Editar traducciones",
+        "remove": "Eliminar traducciones",
+        "save": "Guardar traducciones"
+      },
+      "cancel": "Cancelar",
+      "saved": "Guardar"
+    }
+  },
+  "select": {
+    "option": {
+      "label": {
+        "language": "Selecciona un idioma"
+      }
+    }
+  }
+}

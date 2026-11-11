@@ -1,0 +1,167 @@
+<form
+  [formGroup]="permissionForm"
+  (ngSubmit)="onSubmit()"
+  class="mx-auto max-w-3xl space-y-8 rounded-2xl border border-slate-200 p-6 shadow-sm sm:p-8 dark:border-slate-700"
+>
+  <header class="border-b border-slate-200 pb-6 dark:border-slate-700">
+    <h1>{{ 'permission.form.create.title' | translate }}</h1>
+
+    <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">
+      {{ 'permission.form.create.description' | translate }}
+    </p>
+  </header>
+
+  <section class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+
+    <!-- Code -->
+    <div>
+      <shared-label-form
+        [title]="'permission.input.code.title'"
+        [description]="'permission.input.code.description'"
+        [required]="true">
+
+        <input
+          id="code"
+          type="text"
+          formControlName="code"
+          class="w-full"
+          [placeholder]="'permission.input.code.placeholder' | translate" />
+
+      </shared-label-form>
+
+      @if ( ifTouchField('code') ) {
+
+        @if ( hasError('code', 'required') ) {
+          <p class="form-error ">
+            {{ 'error.label.code.required' | translate }}
+          </p>
+        } @else if ( hasError('code', 'minlength') ) {
+          <p class="form-error ">
+            {{ 'error.label.code.minLength' | translate }}
+          </p>
+        } @else if ( hasError('code', 'maxlength') ) {
+          <p class="form-error ">
+            {{ 'error.label.code.maxLength' | translate }}
+          </p>
+        }
+      }
+    </div>
+
+    <!-- Action -->
+    <div>
+      <shared-label-form
+        [title]="'permission.input.action.title'"
+        [description]="'permission.input.action.description'"
+        [required]="true">
+
+        <select
+          id="action"
+          formControlName="action"
+          class="select select-bordered w-full">
+
+          <option value="" disabled>
+            {{ 'permission.input.action.placeholder' | translate }}
+          </option>
+
+          @for (action of actions; track action[0]) {
+            <option [value]="action[0]">
+              {{ action[1] | translate }}
+            </option>
+          }
+
+        </select>
+
+      </shared-label-form>
+
+      @if (
+        ifTouchField('action') &&
+        hasError('action','required')
+        ) {
+        <p class="form-error ">
+          {{ 'error.label.action.required' | translate }}
+        </p>
+      }
+    </div>
+  </section>
+
+  <!-- parent -->
+  @if( permissionForm.controls.action.value!){
+    @if( permissionParent().length === 0 ){
+       <shared-spinner label="spinner.label.loading.permission-parents"></shared-spinner>
+    } @else {
+      <section class="flex w-full min-w-0 justify-start">
+        <div class="w-full min-w-0">
+          <shared-label-form
+            [title]="'permission.input.parent.title'"
+            [description]="'permission.input.parent.description'"
+            [required]="false">
+
+            <select
+              formControlName="parentId"
+              class="w-full min-w-0 max-w-full">
+
+              <option [ngValue]="null">Sin permiso padre</option>
+
+              @for (permission of permissionParent(); track permission.id) {
+                <option [ngValue]="permission.id">
+                  {{ permission.name }}
+                </option>
+              }
+            </select>
+
+          </shared-label-form>
+        </div>
+      </section>
+    }
+    
+  }
+  <section>
+<!--    <app-form-field translationKey="permission.translations">-->
+<!--      <input-ranslations-editor formControlName="translations" />-->
+<!--    </app-form-field>-->
+    <shared-translation-form
+      formControlName="translations">
+    </shared-translation-form>
+
+    @if ( ifTouchField('translations') ) {
+
+      @if ( hasError('translations','required') ) {
+        <p class="form-error">
+          {{ 'error.label.translations.required' | translate }}
+        </p>
+      } @else if ( hasError('translations','minlength') ) {
+        <p class="form-error">
+          {{ 'error.label.translations.minLength' | translate }}
+        </p>
+      }
+    }
+  </section>
+
+
+  <footer class="flex justify-end border-t border-slate-200 pt-6 dark:border-slate-700">
+<!--    <button-->
+<!--      type="submit"-->
+<!--      [disabled]="permissionForm.invalid"-->
+<!--      class="button"-->
+<!--    >-->
+<!--      {{ 'btn.label.saved' | translate }}-->
+<!--    </button>-->
+    <shared-button
+      type="submit"
+      [svg]="icons.saveIcon"
+      icon="fa-solid fa-floppy-disk"
+      tooltip="btn.label.saved"
+      label="btn.label.saved"
+      variant="ghost"
+      [disabled]="!isValidForm()"
+    />
+  </footer>
+</form>
+
+<br/>
+<!--{{ permissionForm.value | json }}-->
+
+<!-- -->
+<shared-icons #icons />
+
+

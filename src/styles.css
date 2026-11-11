@@ -1,6 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "tailwindcss";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
+/* Theme */
+@import "./styles/theme.css";
+
+/* Base */
+@import "./styles/base.css";
+
+/* Components */
+@import "./styles/buttons.css";
+@import "./styles/modals.css";
+@import "./styles/tooltip.css";
 
 /* 1. Incluye las clases y componentes de Flowbite */
 @plugin "flowbite/plugin";

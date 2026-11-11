@@ -1,0 +1,20 @@
+<div class="form-control">
+  <label
+    [for]="labelFor()"
+    [ngClass]="[labelClass()]">
+    <span class="label-text font-semibold">
+      {{ title() | translate }}
+    </span>
+    @if ( required() ) {
+      <span class="text-danger">*</span>
+    }
+  </label>
+
+  @if( description() ) {
+    <p class="text-sm text-base-content/70 mb-2">
+      {{ description() | translate }}
+    </p>
+  }
+
+  <ng-content />
+</div>
